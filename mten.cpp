@@ -5,7 +5,10 @@ typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> pii;
 typedef vector<int> vi;
+typedef vector<char> vchr;
+typedef vector<string> vstr;
 typedef vector<vi> vvi;
+typedef vector<vchr> vvchr;
 typedef vector<ll> vll;
 typedef vector<pii> vpii;
 typedef vector<vll> vvll;
@@ -48,38 +51,78 @@ sim dor(const c&) { ris; }
 #define rall(v) v.rbegin(), v.rend()
 #define For(i, n) for(int i=0; i < n; ++i)
 
-
-struct Point{
-	ll x, y;
-	void read(){
-		cin >> x >> y;
-	}
-	Point operator -(const Point& b) const{
-		return Point{x- b.x, y-b.y};
-	}
-	void operator -= (const Point& b){
-		x -= b.x;
-		y -= b.y;
-	}
-	ll operator *(const Point& b) const{
-		return x * b.y - y *b.x;
-	}
-};
-
-
 void solve(){
-
+	int n;
+	scanf("%d", &n);
+	vll arr(n);
+	For(i, n){
+		cin >> arr[i];
+		if(arr[i] == 0)
+			continue;
+		if(arr[i] % 2)
+			arr[i] += arr[i] % 10;
+		while(arr[i] < 10)
+			arr[i] += arr[i] % 10;
+	}
+	// debug() << imie(arr);
+	if(arr[0] % 5 == 0){
+		For(i, n){
+			if(arr[i] % 5 != 0){
+				no;
+				return;
+			}
+		}
+		int mx = *max_element(all(arr));
+		int mn = *min_element(all(arr));
+		if(mn == 0 && mx != mn || mx != mn && (mx - mn > 5)){
+			no;
+			return;
+		}
+		if(mx - mn == 5 && mx % 10 == 5){
+			no;
+			return;
+		}
+	}else if((arr[0] / 10) % 2 && arr[0]%10 != 6 || (arr[0] / 10) % 2 == 0 && arr[0]%10 == 6){
+		For(i, n){
+			if((arr[i] / 10) % 2 && arr[i] % 10 == 6){
+				no;
+				return;
+			}
+			if((arr[i] / 10) % 2 == 0 && arr[i] % 10 != 6){
+				no;
+				return;
+			}
+			if(arr[i] % 5 == 0){
+				no;
+				return;
+			}
+		}
+	}else{
+		For(i, n){
+			if((arr[i] / 10) % 2 && arr[i] % 10 != 6){
+				no;
+				return;
+			}
+			if((arr[i] / 10) % 2 == 0 && arr[i] % 10 == 6){
+				no;
+				return;
+			}
+			if(arr[i] % 5 == 0){
+				no;
+				return;
+			}
+		}
+	}
+	yes;
 }
 
 int main(){
-	fastio;
+	// fastio;
 	// cout << setprecision(9);
 	// cout << fixed;
 	// freopen("input.in", "r", stdin);
-	// freopen("output.out", "w", stdout);
-
 	int t = 1;
-	// cin >> t;
+	scanf("%d", &t);
 	while(t--)
 		solve();
 	return 0;

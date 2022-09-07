@@ -5,7 +5,10 @@ typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> pii;
 typedef vector<int> vi;
+typedef vector<char> vchr;
+typedef vector<string> vstr;
 typedef vector<vi> vvi;
+typedef vector<vchr> vvchr;
 typedef vector<ll> vll;
 typedef vector<pii> vpii;
 typedef vector<vll> vvll;
@@ -48,26 +51,28 @@ sim dor(const c&) { ris; }
 #define rall(v) v.rbegin(), v.rend()
 #define For(i, n) for(int i=0; i < n; ++i)
 
-
-struct Point{
-	ll x, y;
-	void read(){
-		cin >> x >> y;
-	}
-	Point operator -(const Point& b) const{
-		return Point{x- b.x, y-b.y};
-	}
-	void operator -= (const Point& b){
-		x -= b.x;
-		y -= b.y;
-	}
-	ll operator *(const Point& b) const{
-		return x * b.y - y *b.x;
-	}
-};
-
-
 void solve(){
+	int s;
+	cin >> s;
+	if(s < 10){
+		cout << s << endl;
+		return;
+	}
+	string ans = "9";
+	int ct = 8;
+	int sm = 9;
+	while(sm < s){
+		if(s - sm < 10 && ct >= s-sm){
+			ans = to_string(s-sm) + ans;
+			sm = s;
+		}
+		else{
+			ans = to_string(ct) + ans;
+			sm += ct--;
+		}
+	}
+	cout << ans << endl;
+
 
 }
 
@@ -76,10 +81,8 @@ int main(){
 	// cout << setprecision(9);
 	// cout << fixed;
 	// freopen("input.in", "r", stdin);
-	// freopen("output.out", "w", stdout);
-
 	int t = 1;
-	// cin >> t;
+	cin >> t;
 	while(t--)
 		solve();
 	return 0;

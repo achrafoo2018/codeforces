@@ -68,6 +68,21 @@ struct Point{
 
 
 void solve(){
+	vector<pair<int,int>> p1(3), p2(3);
+	For(i, 3){
+		int x, y;
+		cin >> x >> y;
+		p1[i].first = x;
+		p1[i].second = y;
+		p2[i].first = y;
+		p2[i].second = x;
+	}
+	sort(all(p1));
+	sort(all(p2));
+	cout << 3 << endl;
+	cout << p1[0].first << " " << p1[0].second << " " << p1[1].first << " " << p1[0].second << endl;
+	cout << p1[1].first << " " << p2[0].first << " " << p1[1].first << " " << p2[2].first << endl;
+	cout << p1[2].first << " " << p1[2].second << " " << p1[1].first << " " << p1[2].second << endl;
 
 }
 
@@ -76,8 +91,6 @@ int main(){
 	// cout << setprecision(9);
 	// cout << fixed;
 	// freopen("input.in", "r", stdin);
-	// freopen("output.out", "w", stdout);
-
 	int t = 1;
 	// cin >> t;
 	while(t--)

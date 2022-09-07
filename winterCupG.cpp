@@ -5,7 +5,10 @@ typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> pii;
 typedef vector<int> vi;
+typedef vector<char> vchr;
+typedef vector<string> vstr;
 typedef vector<vi> vvi;
+typedef vector<vchr> vvchr;
 typedef vector<ll> vll;
 typedef vector<pii> vpii;
 typedef vector<vll> vvll;
@@ -49,26 +52,53 @@ sim dor(const c&) { ris; }
 #define For(i, n) for(int i=0; i < n; ++i)
 
 
-struct Point{
-	ll x, y;
-	void read(){
-		cin >> x >> y;
+vi sieve(int n){
+	bool arr[n];
+	vi primes;
+	arr[0] = arr[1] = true;
+	for(int i=2; i*i < n; i++){
+		if(!arr[i]){
+			for(ll j=i*i; j < n; j += i)
+				arr[j] = true;
+		}
 	}
-	Point operator -(const Point& b) const{
-		return Point{x- b.x, y-b.y};
+	For(i, n){
+		if(!arr[i])
+			primes.push_back(i);
 	}
-	void operator -= (const Point& b){
-		x -= b.x;
-		y -= b.y;
+	return primes;
+}
+void primeFactors(int n, map<int, int> &mp){
+	int c=2;
+	while(n>1){
+		if(n%c==0){
+			mp[c]++;
+			n/=c;
+		}
+		else c++;
 	}
-	ll operator *(const Point& b) const{
-		return x * b.y - y *b.x;
-	}
-};
-
-
+}
 void solve(){
-
+	ll n, l;
+	cin >> n >> l;
+	vi primes = sieve(l+1);
+	vi a(n), b(n);
+	For(i, n)
+		cin >> a[i];
+	For(i, n)
+		cin >> b[i];
+	map<int, int> mp1, mp2;
+	for(int i : a)
+		primeFactors(i, mp1);
+	for(int i : b)
+		primeFactors(i, mp2);
+	int mn1 = INT_MAX;
+	int mn2 = INT_MAX;
+	for(int i : primes){
+		mn1 = min(mn1, mp2[i]);
+		mn2 = min(mn2, mp1[i]);
+	}
+	cout << (mn1 <= mn2 ? "Rami" : "Yessine") << endl;
 }
 
 int main(){
@@ -76,8 +106,6 @@ int main(){
 	// cout << setprecision(9);
 	// cout << fixed;
 	// freopen("input.in", "r", stdin);
-	// freopen("output.out", "w", stdout);
-
 	int t = 1;
 	// cin >> t;
 	while(t--)

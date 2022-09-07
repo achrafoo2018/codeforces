@@ -5,7 +5,10 @@ typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> pii;
 typedef vector<int> vi;
+typedef vector<char> vchr;
+typedef vector<string> vstr;
 typedef vector<vi> vvi;
+typedef vector<vchr> vvchr;
 typedef vector<ll> vll;
 typedef vector<pii> vpii;
 typedef vector<vll> vvll;
@@ -48,27 +51,37 @@ sim dor(const c&) { ris; }
 #define rall(v) v.rbegin(), v.rend()
 #define For(i, n) for(int i=0; i < n; ++i)
 
-
-struct Point{
-	ll x, y;
-	void read(){
-		cin >> x >> y;
-	}
-	Point operator -(const Point& b) const{
-		return Point{x- b.x, y-b.y};
-	}
-	void operator -= (const Point& b){
-		x -= b.x;
-		y -= b.y;
-	}
-	ll operator *(const Point& b) const{
-		return x * b.y - y *b.x;
-	}
-};
-
-
 void solve(){
-
+	int n;
+	cin >> n;
+	string s;
+	cin >> s;
+	int ans = INT_MAX;
+	int l = 0, r = 1;
+	int a = (s[l] == 'a') + (s[r] == 'a');
+	int b = (s[l] == 'b') + (s[r] == 'b');
+	int c = (s[l] == 'c') + (s[r] == 'c');
+	debug() << imie(a) imie(b) imie(c);
+	while(r < n){
+		if(s[l] != 'a' && l < r){
+			b -= (s[l] == 'b');
+			c -= (s[l] == 'c');
+			l--;
+		}
+		if(a > b && a > c && l < r){
+			ans = min(ans, r-l + 1);
+			a -= (s[l] == 'a');
+			b -= (s[l] == 'b');
+			c -= (s[l] == 'c');
+			l++;
+		}else{
+			r++;
+			a += (s[r] == 'a');
+			b += (s[r] == 'b');
+			c += (s[r] == 'c');
+		}
+	}
+	cout << (ans != INT_MAX ? ans : -1) << endl;
 }
 
 int main(){
@@ -76,10 +89,8 @@ int main(){
 	// cout << setprecision(9);
 	// cout << fixed;
 	// freopen("input.in", "r", stdin);
-	// freopen("output.out", "w", stdout);
-
 	int t = 1;
-	// cin >> t;
+	cin >> t;
 	while(t--)
 		solve();
 	return 0;

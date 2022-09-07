@@ -5,7 +5,10 @@ typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> pii;
 typedef vector<int> vi;
+typedef vector<char> vchr;
+typedef vector<string> vstr;
 typedef vector<vi> vvi;
+typedef vector<vchr> vvchr;
 typedef vector<ll> vll;
 typedef vector<pii> vpii;
 typedef vector<vll> vvll;
@@ -49,26 +52,26 @@ sim dor(const c&) { ris; }
 #define For(i, n) for(int i=0; i < n; ++i)
 
 
-struct Point{
-	ll x, y;
-	void read(){
-		cin >> x >> y;
-	}
-	Point operator -(const Point& b) const{
-		return Point{x- b.x, y-b.y};
-	}
-	void operator -= (const Point& b){
-		x -= b.x;
-		y -= b.y;
-	}
-	ll operator *(const Point& b) const{
-		return x * b.y - y *b.x;
-	}
-};
 
-
-void solve(){
-
+int solve(string s){
+	map<char, int> mp;
+	int l = 0;
+	int mx = 0;
+	for(int i=0; i < s.size(); i++){
+		debug() << imie(mp);
+		if(mp.find(s[i]) != mp.end()){
+			mx = mx > mp.size() ? mx : mp.size();
+			for(int j = l ; j < mp[s[i]]; j++){
+				mp.erase(s[j]);
+			}
+			l = mp[s[i]] + 1;
+			mp[s[i]] = i;
+		}else{
+			mp[s[i]] = i;
+		}
+	}
+	mx = mx > mp.size() ? mx : mp.size();
+	return mx;
 }
 
 int main(){
@@ -76,11 +79,10 @@ int main(){
 	// cout << setprecision(9);
 	// cout << fixed;
 	// freopen("input.in", "r", stdin);
-	// freopen("output.out", "w", stdout);
-
 	int t = 1;
 	// cin >> t;
+	string s = "abcabcbb";
 	while(t--)
-		solve();
+		cout << "mx = " << solve(s) << endl;
 	return 0;
 }

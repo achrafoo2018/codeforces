@@ -5,7 +5,10 @@ typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> pii;
 typedef vector<int> vi;
+typedef vector<char> vchr;
+typedef vector<string> vstr;
 typedef vector<vi> vvi;
+typedef vector<vchr> vvchr;
 typedef vector<ll> vll;
 typedef vector<pii> vpii;
 typedef vector<vll> vvll;
@@ -48,39 +51,55 @@ sim dor(const c&) { ris; }
 #define rall(v) v.rbegin(), v.rend()
 #define For(i, n) for(int i=0; i < n; ++i)
 
+int Global1 = 0;
+int Global2 = 0;
 
-struct Point{
-	ll x, y;
-	void read(){
-		cin >> x >> y;
-	}
-	Point operator -(const Point& b) const{
-		return Point{x- b.x, y-b.y};
-	}
-	void operator -= (const Point& b){
-		x -= b.x;
-		y -= b.y;
-	}
-	ll operator *(const Point& b) const{
-		return x * b.y - y *b.x;
-	}
-};
+int F1(int *ptr){
+	(*ptr)++;
+	return *ptr;
+}
 
+int &F2(int *ptr){
+	(*ptr)++;
+	ptr = &Global2;
+	return *ptr;
+}
 
-void solve(){
+int F3(int G(int *ptr)){
+	return G(&Global2);
+}
 
+int &F4(int &i){
+	i++;
+	return i;
+}
+
+int F5(int i){
+	static int u=0;
+	i++;
+	u = u+i;
+	Global2 = u+Global2;
+	return u;
 }
 
 int main(){
-	fastio;
-	// cout << setprecision(9);
-	// cout << fixed;
-	// freopen("input.in", "r", stdin);
-	// freopen("output.out", "w", stdout);
-
-	int t = 1;
-	// cin >> t;
-	while(t--)
-		solve();
+	int NoLigne=0;
+	int *ptr=&Global1;
+	int &j=F4(F2(ptr));
+	int &k=*ptr;
+	j++;
+	printf("%d : Global 1 = %d; Global 2 = %d\n", ++NoLigne, Global1, Global2);
+	Global1 = 0, Global2 = 0;
+	ptr = &F4(k);
+	(*ptr)++;
+	printf("%d : Global 1 = %d; Global 2 = %d\n", ++NoLigne, Global1, Global2);
+	Global1 = 0, Global2 = 0;
+	ptr=&Global1;
+	k = F3(F1);
+	k++;
+	printf("%d : Global 1 = %d; Global 2 = %d\n", ++NoLigne, Global1, Global2);
+	Global1=0, Global2=0;
+	Global1 += F5(F5(Global2));
+	printf("%d : Global 1 = %d; Global 2 = %d\n", ++NoLigne, Global1, Global2);
 	return 0;
 }

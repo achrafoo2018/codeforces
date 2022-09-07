@@ -52,30 +52,84 @@ sim dor(const c&) { ris; }
 #define For(i, n) for(int i=0; i < n; ++i)
 
 void solve(){
-	int n;
-	cin >> n;
-	map<int, int> mp;
-	vi arr;
+	int n, m;
+	cin >> n >> m;
+	vector<string> matrix(n);
+	int ones = 0;
 	For(i, n){
-		int x; 
-		cin >> x;
-		mp[x%10]++;
-		if(mp[x%10] <= 3)
-			arr.push_back(x%10);
+		cin >> matrix[i];
+		For(j, m)
+			ones += matrix[i][j] == '1';
 	}
-	for(int i = 0; i < arr.size(); i++){
-		for(int j = i+1; j < arr.size(); j++){
-			for(int k = j+1; k < arr.size(); k++){
-				int x = arr[i] + arr[j] + arr[k];
-				if( (x % 10) == 3){
-					yes;
-					return;
+	if(ones == 0){
+		cout << 0 << endl;
+		return;
+	}
+	int x, mx = INT_MIN;
+	For(i, n){
+		For(j, m){
+			if(matrix[i][j] == '1'){
+				if(i > 0 && j > 0){
+					x = ((matrix[i-1][j-1] == '0') + (matrix[i-1][j] == '0'));
+					if(x > mx){
+						mx = x;
+					}
+					x = ((matrix[i-1][j-1] == '0') + (matrix[i][j-1] == '0'));
+					if(x > mx){
+						mx = x;
+					}
+					x = ((matrix[i-1][j] == '0') + (matrix[i][j-1] == '0'));
+					if(x > mx){
+						mx = x;
+					}
+				}
+				if(j < m-1 && i > 0){
+					x = ((matrix[i-1][j] == '0') + (matrix[i-1][j+1] == '0'));
+					if(x > mx){
+						mx = x;
+					}
+					x = ((matrix[i][j+1] == '0') + (matrix[i-1][j+1] == '0'));
+					if(x > mx){
+						mx = x;
+					}
+					x = ((matrix[i-1][j] == '0') + (matrix[i][j+1] == '0'));
+					if(x > mx){
+						mx = x;
+					}
+				}
+				if(i < n-1 && j > 0){
+					x = ((matrix[i][j-1] == '0') + (matrix[i+1][j-1] == '0'));
+					if(x > mx){
+						mx = x;
+					}
+					x = ((matrix[i+1][j] == '0') + (matrix[i+1][j-1] == '0'));
+					if(x > mx){
+						mx = x;
+					}
+					x = ((matrix[i+1][j] == '0') + (matrix[i][j-1] == '0'));
+					if(x > mx){
+						mx = x;
+					}
+				}
+				if(i < n-1 && j < m-1){
+					x = ((matrix[i+1][j] == '0') + (matrix[i+1][j+1] == '0'));
+					if(x > mx){
+						mx = x;
+					}
+					x = ((matrix[i][j+1] == '0') + (matrix[i+1][j+1] == '0'));
+					if(x > mx){
+						mx = x;
+					}
+					x = ((matrix[i][j+1] == '0') + (matrix[i+1][j] == '0'));
+					if(x > mx){
+						mx = x;
+					}
 				}
 			}
 		}
 	}
-	no;	
-}	
+	cout << ones - (2 - mx) << endl;
+}
 
 int main(){
 	fastio;

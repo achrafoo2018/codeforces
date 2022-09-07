@@ -84,6 +84,7 @@ int main(){
 	// cout << setprecision(9);
 	// cout << fixed;
 	// freopen("input.in", "r", stdin);
+  // freopen("output.out", "w", stdout);
   int t = 1;
 	// cin >> t;
 	while(t--)
