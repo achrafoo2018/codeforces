@@ -2,6 +2,7 @@
 using namespace std;
  
 typedef long long ll;
+typedef unsigned long long ull;
 typedef long double ld;
 typedef pair<int, int> pii;
 typedef vector<int> vi;
@@ -16,6 +17,9 @@ typedef pair<ll, ll> pll;
 
 #define yes cout << "YES" << endl;
 #define no  cout << "NO" << endl;
+template<class T> bool ckmin(T& a, const T& b) { return b < a ? a = b, 1 : 0; }
+template<class T> bool ckmax(T& a, const T& b) { return a < b ? a = b, 1 : 0; }
+mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().count());
 #define sim template < class c
 #define ris return * this
 #define dor > debug & operator <<
@@ -52,7 +56,8 @@ sim dor(const c&) { ris; }
 #define For(i, n) for(int i=0; i < n; ++i)
 
 void solve(){
-	
+	ull x = rng();
+	debug() << imie(x);
 }
 
 int main(){
@@ -60,6 +65,7 @@ int main(){
 	// cout << setprecision(9);
 	// cout << fixed;
 	// freopen("input.in", "r", stdin);
+	// freopen("output.out", "w", stdout);
 	int t = 1;
 	// cin >> t;
 	while(t--)
