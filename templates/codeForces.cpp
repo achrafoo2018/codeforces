@@ -53,6 +53,7 @@ sim dor(const c&) { ris; }
 #define all(v) v.begin(), v.end()
 #define rall(v) v.rbegin(), v.rend()
 #define For(i, n) for(int i=0; i < n; ++i)
+#define Forr(i, n, p) for(int i=p; i < n; ++i)
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
 

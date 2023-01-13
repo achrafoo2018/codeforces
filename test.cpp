@@ -2,7 +2,6 @@
 using namespace std;
  
 typedef long long ll;
-typedef unsigned long long ull;
 typedef long double ld;
 typedef pair<int, int> pii;
 typedef vector<int> vi;
@@ -17,9 +16,6 @@ typedef pair<ll, ll> pll;
 
 #define yes cout << "YES" << endl;
 #define no  cout << "NO" << endl;
-template<class T> bool ckmin(T& a, const T& b) { return b < a ? a = b, 1 : 0; }
-template<class T> bool ckmax(T& a, const T& b) { return a < b ? a = b, 1 : 0; }
-mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().count());
 #define sim template < class c
 #define ris return * this
 #define dor > debug & operator <<
@@ -55,9 +51,106 @@ sim dor(const c&) { ris; }
 #define rall(v) v.rbegin(), v.rend()
 #define For(i, n) for(int i=0; i < n; ++i)
 
+
+struct segement_tree{
+	int size; vpii tree;
+	void init(int n){
+		size = 1;
+		while(size < n) size *= 2;
+		tree.assign(2*size, make_pair(0, 0));
+	}
+
+	void build(vpii &arr){
+		init(arr.size());
+		build(arr, 0, 0, size);
+	}
+
+	void build(vpii &arr, int x, int lx, int rx){
+		if(rx - lx == 1){
+			if(lx < arr.size()){
+				tree[x] = arr[lx];
+			}
+			return;
+		}
+		int m = (lx+rx) / 2;
+		build(arr, 2*x+1, lx, m);
+		build(arr, 2*x+2, m, rx);
+		pii left = tree[2*x+1];
+		pii right = tree[2*x+2];
+		tree[x] = merge(left, right);
+	}
+
+	void update(int i, int v){
+		update(i, v, 0, 0, size);
+	}
+
+	void update(int i, int v, int x, int lx, int rx){
+		if(rx-lx == 1){
+			tree[x].first = v;
+			return;
+		}
+		int m = (lx+rx) / 2;
+		if(i < m){
+			update(i, v, 2*x+1, lx, m);
+		}else{
+			update(i, v, 2*x+2, m, rx);
+		}
+		pii left = tree[2*x+1];
+		pii right = tree[2*x+2];
+		tree[x] = merge(left, right);
+	}
+
+
+	int query(int v){
+		return query(v, 0, 0, size);
+	}
+
+	int query(int v, int x, int lx, int rx){
+		if(x < 2*size && tree[x].first == v){
+			return tree[x].second;
+		}
+		if(tree[x].first < v){
+			return -1;
+		}
+		int m = (lx+rx) / 2;
+		int ans;
+		if((ans = query(v, 2*x+1, lx, m)) > v){
+			return ans;
+		}else if(ans = query(v, 2*x+2, m, rx) >= v){
+			return ans;
+		}
+		return tree[x].second;
+	}
+
+
+	pii merge(pii left, pii right){
+		if(left.first >= right.first){
+			return left;
+		}else{
+			return right;
+		}
+	}
+};
+
 void solve(){
-	ull x = rng();
-	debug() << imie(x);
+	int n, m; cin >> n >> m;
+	vpii arr(n);
+	For(i, n){
+		cin >> arr[i].first;
+		arr[i].second = i;
+	}
+	segement_tree st;
+	st.build(arr);
+	while(m--){
+		int op; cin >> op;
+		if(op == 1){
+			int i, v; cin >> i >> v;
+			st.update(i, v);
+		}else{
+			int x; cin >> x;
+			cout << st.query(x) << endl;	
+		}
+	}
 }
 
 int main(){

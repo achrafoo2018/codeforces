@@ -14,8 +14,8 @@ typedef vector<pii> vpii;
 typedef vector<vll> vvll;
 typedef pair<ll, ll> pll;
 
-#define yes cout << "YES" << endl;
-#define no  cout << "NO" << endl;
+#define yes cout << "YES\n";
+#define no  cout << "NO\n";
 template<class T> bool ckmin(T& a, const T& b) { return b < a ? a = b, 1 : 0; }
 template<class T> bool ckmax(T& a, const T& b) { return a < b ? a = b, 1 : 0; }
 mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().count());
@@ -53,29 +53,32 @@ sim dor(const c&) { ris; }
 #define all(v) v.begin(), v.end()
 #define rall(v) v.rbegin(), v.rend()
 #define For(i, n) for(int i=0; i < n; ++i)
+#define Forr(i, n, p) for(int i=p; i < n; ++i)
+#define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
-int n; 
-vpii arr;
-bool check(long double mid){
-	For(i, n){
-		
-	}
-}
+
 void solve(){
-	cin >> n;
-	arr.resize(n);
-	For(i, n){
-		cin >> arr[i].first >> arr[i].second;
-	}
-	long double l = -1e10, r = 1e10;
-	long double ans = INT_MAX;
+	int n; cin >> n;
+	vpii arr(n);
+	For(i, n) cin >> arr[i].first >> arr[i].second;
+	auto check = [&](double mid){
+		double L = INT_MIN, R = INT_MAX;
+		For(i, n){
+			L = max(L, arr[i].first - arr[i].second * mid);
+			R = min(R, arr[i].first + arr[i].second * mid);
+		}
+		return L <= R;
+	};
+
+	double l = 0, r = 1e9+7;
+	double ans = 0;
 	while(l <= r){
-		long double mid = (l+r) / 2;
+		double mid = (r + l) / 2;
 		if(check(mid)){
-			r = mid-1e-6;
-			ans = min(ans, mid);
+			r = mid - 1e-7;
+			ans = mid;
 		}else{
-			l = mid + 1e-6;
+			l = mid + 1e-7;
 		}
 	}
 	cout << ans << endl;
@@ -83,7 +86,7 @@ void solve(){
 
 int main(){
 	fastio;
-	cout << setprecision(6);
+	cout << setprecision(7);
 	cout << fixed;
 	// freopen("input.in", "r", stdin);
 	// freopen("output.out", "w", stdout);

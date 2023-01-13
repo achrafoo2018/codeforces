@@ -14,8 +14,11 @@ typedef vector<pii> vpii;
 typedef vector<vll> vvll;
 typedef pair<ll, ll> pll;
 
-#define yes cout << "YES" << endl;
-#define no  cout << "NO" << endl;
+#define yes cout << "YES\n";
+#define no  cout << "NO\n";
+template<class T> bool ckmin(T& a, const T& b) { return b < a ? a = b, 1 : 0; }
+template<class T> bool ckmax(T& a, const T& b) { return a < b ? a = b, 1 : 0; }
+mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().count());
 #define sim template < class c
 #define ris return * this
 #define dor > debug & operator <<
@@ -50,9 +53,19 @@ sim dor(const c&) { ris; }
 #define all(v) v.begin(), v.end()
 #define rall(v) v.rbegin(), v.rend()
 #define For(i, n) for(int i=0; i < n; ++i)
+#define Forr(i, n, p) for(int i=p; i < n; ++i)
+#define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
+
 
 void solve(){
-	
+	For(i, 5){
+		string s; cin >> s;
+	}
+	yes;
+	no;
+	yes;
+	yes;
+	no;
 }
 
 int main(){

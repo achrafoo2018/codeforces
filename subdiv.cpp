@@ -59,15 +59,19 @@ sim dor(const c&) { ris; }
 void solve(){
 	int n; cin >> n;
 	map<ll, int> mp;
-	vll arr(n+1);
-	arr[0] = 0;
 	ll ans = 0;
-	mp[0] = 1;
+	ll s = 0;
 	for(int i=1; i <= n; i++){
-		ll c; cin >> c;
-		arr[i] = arr[i-1] + c;
-		ans += mp[abs(arr[i]) % n];
-		mp[abs(arr[i]) % n]++;
+		int c; cin >> c;
+		s = (s + c) % n;
+		ans += (s == 0);
+		ans += mp[s];
+		if(s >= 0){
+			ans += mp[s-n];
+		}else{
+			ans += mp[n-abs(s)];
+		}
+		mp[s]++;
 	}
 	cout << ans << endl;
 }
