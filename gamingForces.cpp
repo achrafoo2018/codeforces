@@ -59,7 +59,16 @@ sim dor(const c&) { ris; }
 
 
 void solve(){
-	
+	int n;cin >> n;
+	vi arr(n);
+	int nbo = 0;
+	For(i, n){
+		cin >> arr[i];
+		nbo += (arr[i] == 1);
+	}
+	int ans = nbo / 2 + nbo % 2 + n-nbo;
+	cout << ans << endl;
+
 }
 
 int main(){
@@ -69,7 +78,7 @@ int main(){
 	// freopen("input.in", "r", stdin);
 	// freopen("output.out", "w", stdout);
 	int t = 1;
-	// cin >> t;
+	cin >> t;
 	while(t--)
 		solve();
 	return 0;

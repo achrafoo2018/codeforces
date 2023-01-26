@@ -74,6 +74,7 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "signal.h": "c"
+        "signal.h": "c",
+        "span": "cpp"
     }
 }

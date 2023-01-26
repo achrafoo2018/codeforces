@@ -58,8 +58,29 @@ sim dor(const c&) { ris; }
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
 
+map<int, set<int>> graph;
+vb visited;
+vi colors;
+void dfs(int pos, int color=0){
+	visited[pos] = 1;
+	colors[pos] = color;
+	for(int edge : graph[pos]){
+		if(!visited[edge])
+			dfs(pos, 1-color);
+	}
+}
 void solve(){
-	
+	int n; cin >> n;
+	visited.assign(n, false);
+	colors.assign(n, -1);
+	For(i, n-1){
+		int x, y; cin >> x >> y;
+		x--; y--;
+		graph[x].insert(y);
+		graph[y].insert(x);
+	}
+	dfs(0);
+	debug() << imie(colors);
 }
 
 int main(){

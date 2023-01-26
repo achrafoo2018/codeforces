@@ -5,7 +5,6 @@ typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> pii;
 typedef vector<int> vi;
-typedef vector<bool> vb;
 typedef vector<char> vchr;
 typedef vector<string> vstr;
 typedef vector<vi> vvi;

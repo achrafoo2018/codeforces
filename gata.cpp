@@ -58,7 +58,31 @@ sim dor(const c&) { ris; }
 
 
 void solve(){
-	
+	int n; cin >> n;
+	map<int, int> count;
+	vvi arr(n);
+	For(i, n){
+		int k; cin >> k;
+		arr[i] = vi(k);
+		For(j, k){
+			int x; cin >> x;
+			count[x]++;
+			arr[i][j] = x;
+		}
+	}
+	int res = 0;
+	For(i, n){
+		for(int j : arr[i]){
+			if(count[j] == 1){
+				res++; break;
+			}
+		}
+	}
+	if(res == n){
+		no;
+	}else{
+		yes;
+	}
 }
 
 int main(){
@@ -68,7 +92,7 @@ int main(){
 	// freopen("input.in", "r", stdin);
 	// freopen("output.out", "w", stdout);
 	int t = 1;
-	// cin >> t;
+	cin >> t;
 	while(t--)
 		solve();
 	return 0;

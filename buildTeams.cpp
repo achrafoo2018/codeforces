@@ -58,8 +58,47 @@ sim dor(const c&) { ris; }
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
 
+map<int, vi> graph;
+int n;
+vb visited;
+vi colors;
+bool dfs(int pos, int color){
+	visited[pos] = 1;
+	colors[pos] = color;
+	for(int edge : graph[pos]){
+		if(!visited[edge]){
+			if(!dfs(edge, 1 - color)) return false;
+		}else if(colors[edge] == colors[pos]){
+			return false;
+		}
+	}
+	return true;
+}
 void solve(){
-	
+	int n, m; cin >> n >> m;
+	visited.assign(n+1, false);
+	colors.assign(n+1, -1);
+	For(i, m){
+		int x, y; cin >> x >> y;
+		x--; y--;
+		graph[x].PB(y);
+		graph[y].PB(x);
+	}
+	For(i, n){
+		if(!visited[i]){
+			if(!dfs(i, 0)){
+				cout << "IMPOSSIBLE" << endl;return;
+			}
+		}
+	}
+	For(i, n){
+		if(colors[i] == 1){
+			cout << 1 << " ";
+		}else{
+			cout << 2 << " ";
+		}
+	}
+	cout << endl;
 }
 
 int main(){

@@ -5,7 +5,6 @@ typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> pii;
 typedef vector<int> vi;
-typedef vector<bool> vb;
 typedef vector<char> vchr;
 typedef vector<string> vstr;
 typedef vector<vi> vvi;
@@ -59,7 +58,14 @@ sim dor(const c&) { ris; }
 
 
 void solve(){
-	
+	int w, d, h; cin >> w >> d >> h;
+	int a, b, f, g; cin >> a >> b >> f >> g;
+	int ans = b + g + abs(a-f);
+	ans = min(ans, 2*d-b-g + abs(a-f));
+	ans = min(ans, a+f+abs(b-g));
+	ans = min(ans, 2*w-a-f+abs(b-g));
+	ans += h;
+	cout << ans << endl;
 }
 
 int main(){
@@ -69,7 +75,7 @@ int main(){
 	// freopen("input.in", "r", stdin);
 	// freopen("output.out", "w", stdout);
 	int t = 1;
-	// cin >> t;
+	cin >> t;
 	while(t--)
 		solve();
 	return 0;

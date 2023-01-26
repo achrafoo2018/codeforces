@@ -57,17 +57,52 @@ sim dor(const c&) { ris; }
 #define Forr(i, n, p) for(int i=p; i < n; ++i)
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
+map<int, vi> graph;
+vb visited;
 
+void dfs(int pos){
+	visited[pos] = 1;
+	for(int edge : graph[pos]){
+		if(!visited[edge])
+			dfs(edge);
+	}
+}
 void solve(){
-	
+	int n; cin >> n;
+	vector<pair<pii, int>> arr(n);
+	For(i, n){
+		cin >> arr[i].first.first >> arr[i].first.second >> arr[i].second;
+	}
+	For(i, n){
+		For(j, n){
+			if(i == j) continue;
+			int x = abs(arr[i].first.first-arr[j].first.first);
+			x *= x;
+			int y = abs(arr[i].first.second-arr[j].first.second);
+			y *= y;
+			if(x+y <= arr[i].second*arr[i].second){
+				graph[i].PB(j);
+			}
+		}
+	}
+	int ans = 0;
+	For(i, n){
+		visited.assign(n, false);
+		dfs(i);
+		int count = 0;
+		For(j, n)
+			count += visited[j];
+		ans = max(ans, count);
+	}
+	cout << ans << endl;
 }
 
 int main(){
 	fastio;
 	// cout << setprecision(9);
 	// cout << fixed;
-	// freopen("input.in", "r", stdin);
-	// freopen("output.out", "w", stdout);
+	freopen("moocast.in", "r", stdin);
+	freopen("moocast.out", "w", stdout);
 	int t = 1;
 	// cin >> t;
 	while(t--)

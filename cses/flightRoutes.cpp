@@ -5,7 +5,6 @@ typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> pii;
 typedef vector<int> vi;
-typedef vector<bool> vb;
 typedef vector<char> vchr;
 typedef vector<string> vstr;
 typedef vector<vi> vvi;
@@ -58,8 +57,45 @@ sim dor(const c&) { ris; }
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
 
+vector<bool> visited;
+const int N = 1e5+7;
+vi graph[N][2];
+void dfs(int pos, int x){
+	visited[pos] = 1;
+	for(int edge : graph[pos][x]){
+		if(!visited[edge]){
+			dfs(edge, x);
+		}
+	}
+}
+
 void solve(){
-	
+	int n, m; cin >> n >> m;
+	visited.assign(n+1, false);
+	For(i, m){
+		int x, y; cin >> x >> y;
+		x--; y--;
+		graph[x][0].PB(y);
+		graph[y][1].PB(x);
+	}
+	dfs(0, 0);
+	For(j, n){
+		if(!visited[j]){
+			no; 
+			cout << 1 << " " << j+1 << endl;
+			return;
+		}
+	}
+	visited.assign(n+1, false);
+	dfs(0, 1);
+	For(j, n){
+		if(!visited[j]){
+			no; 
+			cout << j+1 << " " << 1 << endl;
+			return;
+		}
+	}
+	yes;
 }
 
 int main(){

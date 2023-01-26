@@ -57,17 +57,57 @@ sim dor(const c&) { ris; }
 #define Forr(i, n, p) for(int i=p; i < n; ++i)
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
-
+vpii arr;
+map<int, vi> graph;
+vi nodes;
+vb visited;
+void dfs(int pos){
+	visited[pos] = 1;
+	nodes.PB(pos);
+	for(int edge : graph[pos]){
+		if(!visited[edge])
+			dfs(edge);
+	}
+}
 void solve(){
-	
+	int n, m; cin >> n >> m;
+	arr.resize(n);
+	visited.assign(n+1, false);
+	For(i, n){
+		cin >> arr[i].first >> arr[i].second;
+	}
+	For(i, m){
+		int x, y; cin >> x >> y;
+		x--; y--;
+		graph[x].PB(y);
+		graph[y].PB(x);
+	}
+	int ans = INT_MAX;
+	For(i, n){
+		if(!visited[i]){
+			nodes.clear();
+			dfs(i);
+			int mnx, mny, mxx, mxy;
+			mnx = mny = INT_MAX;
+			mxx = mxy = 0;
+			for(int cow : nodes){
+				mnx = min(mnx, arr[cow].first);
+				mny = min(mny, arr[cow].second);
+				mxx = max(mxx, arr[cow].first);
+				mxy = max(mxy, arr[cow].second);
+			}
+			ans = min(ans, 2*((mxx-mnx) + (mxy - mny)));
+		}
+	}
+	cout << (ans == INT_MAX ? 0 : ans) << endl;
 }
 
 int main(){
 	fastio;
 	// cout << setprecision(9);
 	// cout << fixed;
-	// freopen("input.in", "r", stdin);
-	// freopen("output.out", "w", stdout);
+	freopen("fenceplan.in", "r", stdin);
+	freopen("fenceplan.out", "w", stdout);
 	int t = 1;
 	// cin >> t;
 	while(t--)

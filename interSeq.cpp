@@ -5,7 +5,6 @@ typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> pii;
 typedef vector<int> vi;
-typedef vector<bool> vb;
 typedef vector<char> vchr;
 typedef vector<string> vstr;
 typedef vector<vi> vvi;
@@ -59,7 +58,53 @@ sim dor(const c&) { ris; }
 
 
 void solve(){
-	
+	ll n, x; cin >> n >> x;
+	if(n == x){
+		cout << n << endl; return;
+	}
+	if(n == 0){
+		cout << -1 << endl; return;
+	}
+	if(x == 0){
+		ll ans = 1;
+		while(ans <= n) ans *= 2;
+		cout << ans << endl; return;
+	}
+	int xpos = 64, npos = 64;
+	For(i, 64){
+		if(x & (1LL << i)){
+			xpos = i; break;
+		}
+	}
+	For(i, 64){
+		if(n & (1LL << i)){
+			npos = i; break;
+		}
+	}
+	if(npos > xpos){
+		cout << -1 << endl; return;
+	}
+
+	Forr(i, 64, xpos){
+		if((x & (1LL << i)) != (n & (1LL << i))){
+			cout << -1 << endl; return;
+		}
+	}
+	int pos = -1;
+	for(int i=xpos-1; i >= npos; i--){
+		if(n & (1LL << i)) break;
+		pos = i;
+	}
+	// debug() << imie(pos) imie(xpos) imie(npos);
+	if(pos == -1){
+		cout << -1 << endl; return;
+	}
+	ll ans = (1LL << pos);
+	Forr(i, 64, pos){
+		if(n & (1LL << i))
+			ans += (1LL << i);
+	}
+	cout << ans << endl;
 }
 
 int main(){
@@ -69,7 +114,7 @@ int main(){
 	// freopen("input.in", "r", stdin);
 	// freopen("output.out", "w", stdout);
 	int t = 1;
-	// cin >> t;
+	cin >> t;
 	while(t--)
 		solve();
 	return 0;

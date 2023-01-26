@@ -5,7 +5,6 @@ typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> pii;
 typedef vector<int> vi;
-typedef vector<bool> vb;
 typedef vector<char> vchr;
 typedef vector<string> vstr;
 typedef vector<vi> vvi;
@@ -59,7 +58,13 @@ sim dor(const c&) { ris; }
 
 
 void solve(){
-	
+	int n; cin >> n;
+	map<char, int> mp;
+	string s; cin >> s;
+	for(char c : s){
+		mp[c]++;
+	}
+	debug() << imie(mp);
 }
 
 int main(){
@@ -69,7 +74,7 @@ int main(){
 	// freopen("input.in", "r", stdin);
 	// freopen("output.out", "w", stdout);
 	int t = 1;
-	// cin >> t;
+	cin >> t;
 	while(t--)
 		solve();
 	return 0;

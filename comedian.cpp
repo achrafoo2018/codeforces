@@ -59,7 +59,17 @@ sim dor(const c&) { ris; }
 
 
 void solve(){
-	
+	vi arr(4);
+	For(i, 4) cin >> arr[i];
+	int ans = arr[0];
+	if(ans == 0){
+		cout << 1 << endl; return;
+	}
+	int mn = min(arr[1], arr[2]);
+	arr[1] -= mn;
+	arr[2] -= mn;
+	ans += 2 * mn + min(arr[0]+1, arr[1]+arr[2]+arr[3]);
+	cout << ans << endl;
 }
 
 int main(){
@@ -69,7 +79,7 @@ int main(){
 	// freopen("input.in", "r", stdin);
 	// freopen("output.out", "w", stdout);
 	int t = 1;
-	// cin >> t;
+	cin >> t;
 	while(t--)
 		solve();
 	return 0;

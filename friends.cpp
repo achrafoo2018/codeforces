@@ -5,7 +5,6 @@ typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> pii;
 typedef vector<int> vi;
-typedef vector<bool> vb;
 typedef vector<char> vchr;
 typedef vector<string> vstr;
 typedef vector<vi> vvi;
@@ -15,8 +14,8 @@ typedef vector<pii> vpii;
 typedef vector<vll> vvll;
 typedef pair<ll, ll> pll;
 
-#define yes cout << "YES\n";
-#define no  cout << "NO\n";
+#define yes cout << "YES" << endl;
+#define no  cout << "NO" << endl;
 template<class T> bool ckmin(T& a, const T& b) { return b < a ? a = b, 1 : 0; }
 template<class T> bool ckmax(T& a, const T& b) { return a < b ? a = b, 1 : 0; }
 mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().count());
@@ -54,23 +53,58 @@ sim dor(const c&) { ris; }
 #define all(v) v.begin(), v.end()
 #define rall(v) v.rbegin(), v.rend()
 #define For(i, n) for(int i=0; i < n; ++i)
-#define Forr(i, n, p) for(int i=p; i < n; ++i)
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
+struct union_find
+{
+    vector<int> parent;
+    union_find(int n)
+    {
+        parent = vector<int>(n);
+        for (int i = 0; i < n; i++)
+        {
+            parent[i] = i;
+        }
+    }
+    int find(int x)
+    {
+        if (parent[x] == x)
+        {
+            return x;
+        }
+        else
+        {
+            parent[x] = find(parent[x]);
+            return parent[x];
+        }
+    }
+    void unite(int x, int y)
+    {
+        parent[find(x)] = find(y);
+    }
+};
 
 void solve(){
-	
+    int n, m; cin >> n >> m;
+    union_find dsu(n);
+    For(i, m){
+        int x, y; cin >> x >> y;
+        x--; y--;
+        dsu.unite(x, y);
+        dsu.unite(y, x);
+    }
+    debug() << imie(dsu.parent.size());
 }
 
 int main(){
-	fastio;
-	// cout << setprecision(9);
-	// cout << fixed;
-	// freopen("input.in", "r", stdin);
-	// freopen("output.out", "w", stdout);
-	int t = 1;
-	// cin >> t;
-	while(t--)
-		solve();
-	return 0;
+    fastio;
+    // cout << setprecision(9);
+    // cout << fixed;
+    // freopen("input.in", "r", stdin);
+    // freopen("output.out", "w", stdout);
+    int t = 1;
+    cin >> t;
+    while (t--)
+        solve();
+    return 0;
 }
