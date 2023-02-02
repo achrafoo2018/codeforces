@@ -11,8 +11,10 @@ typedef vector<pii> vpii;
 typedef vector<vll> vvll;
 typedef pair<ll, ll> pll;
 
+#define endl '\n';
 #define yes cout << "YES" << endl;
 #define no  cout << "NO" << endl;
+
 template<class T> bool ckmin(T& a, const T& b) { return b < a ? a = b, 1 : 0; }
 template<class T> bool ckmax(T& a, const T& b) { return a < b ? a = b, 1 : 0; }
 mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().count());

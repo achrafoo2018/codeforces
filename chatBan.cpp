@@ -5,6 +5,7 @@ typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> pii;
 typedef vector<int> vi;
+typedef vector<bool> vb;
 typedef vector<char> vchr;
 typedef vector<string> vstr;
 typedef vector<vi> vvi;
@@ -14,8 +15,11 @@ typedef vector<pii> vpii;
 typedef vector<vll> vvll;
 typedef pair<ll, ll> pll;
 
-#define yes cout << "YES" << endl;
-#define no  cout << "NO" << endl;
+#define yes cout << "YES\n";
+#define no  cout << "NO\n";
+template<class T> bool ckmin(T& a, const T& b) { return b < a ? a = b, 1 : 0; }
+template<class T> bool ckmax(T& a, const T& b) { return a < b ? a = b, 1 : 0; }
+mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().count());
 #define sim template < class c
 #define ris return * this
 #define dor > debug & operator <<
@@ -50,25 +54,34 @@ sim dor(const c&) { ris; }
 #define all(v) v.begin(), v.end()
 #define rall(v) v.rbegin(), v.rend()
 #define For(i, n) for(int i=0; i < n; ++i)
+#define Forr(i, n, p) for(int i=p; i < n; ++i)
+#define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
+
 
 void solve(){
-	ll k, x;
-	cin >> k >> x;
-	ll h1 = k*(k+1) / 2;
-	ll h2 = k*(k-1) / 2;
-	ll ans = (x / (h1+h2)) * (2*k - 1);
-	ll r = x%(h1+h2);
-	if(r >= h1){
-		ans += k;
-		r = r % h1;
-		for(ll i = k-1; i >= 0; i--){
-			if(x < i)
-				break;
-			ans++;
-			x -= i;
+	ll k, x; cin >> k >> x;
+	auto check = [&](ll mid){
+		ll s = (mid*(mid-1)) / 2;
+		if(mid <= k){
+			return s < x;
 		}
-	}else
-		ans += floor(sqrt(2*r));	
+		s = (k*(k-1)) / 2;
+		ll l = k-(mid-k) + 1;
+		ll r = k;
+		s += (r-l+1)*(l+r)/2;
+		return s < x;
+	};
+	ll l = 1, r = 2LL*k - 1;
+	ll ans = 1;
+	while(l <= r){
+		ll mid = l + (r-l) / 2;
+		if(check(mid)){
+			l = mid+1;
+			ans = max(ans, mid);
+		}else{
+			r = mid-1;
+		}
+	}
 	cout << ans << endl;
 }
 
@@ -77,6 +90,7 @@ int main(){
 	// cout << setprecision(9);
 	// cout << fixed;
 	// freopen("input.in", "r", stdin);
+	// freopen("output.out", "w", stdout);
 	int t = 1;
 	cin >> t;
 	while(t--)

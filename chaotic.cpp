@@ -11,7 +11,6 @@ typedef vector<pii> vpii;
 typedef vector<vll> vvll;
 typedef pair<ll, ll> pll;
 
-#define endl '\n';
 #define yes cout << "YES" << endl;
 #define no  cout << "NO" << endl;
 template<class T> bool ckmin(T& a, const T& b) { return b < a ? a = b, 1 : 0; }
@@ -99,7 +98,7 @@ public:
  
 	void update(int i, Array_Type v, int x, int lx, int rx){
 		if(rx - lx == 1){
-			tree[x] = v;
+			tree[x] += v;
 			return;
 		}
 		int m = (lx + rx) / 2;
@@ -120,7 +119,30 @@ public:
 
 
 void solve(){
-	
+	int n, q; cin >> n >> q;
+	vi arr(n);
+	segment_tree<int, int> st;
+	st.build(arr);
+	while(q--){
+		char c; cin >> c;
+		int a; cin >> a;
+		a--;
+		if(c == '+'){
+			st.update(a, 1);
+		}else if(c == '-'){
+			st.update(a, -1);
+		}else{
+			int b; cin >> b;
+			b--;
+			int left = st.query(min(a, b), max(a, b)+1);
+			int right = st.query(max(a, b), n) + st.query(0, min(a, b)+1);
+			if(left >= 0 || right >= 0){
+				cout << "possible" << endl;
+			}else{
+				cout << "impossible" << endl;
+			}
+		}
+	}
 }
 
 int main(){

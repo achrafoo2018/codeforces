@@ -15,6 +15,7 @@ typedef vector<pii> vpii;
 typedef vector<vll> vvll;
 typedef pair<ll, ll> pll;
 
+#define endl '\n';
 #define yes cout << "YES\n";
 #define no  cout << "NO\n";
 template<class T> bool ckmin(T& a, const T& b) { return b < a ? a = b, 1 : 0; }
@@ -50,7 +51,7 @@ sim dor(const c&) { ris; }
 #define imie(...) " [" << #__VA_ARGS__ ": " << (__VA_ARGS__) << "] "
 #define MP make_pair
 #define PB push_back
-#define fastio ios_base::sync_with_stdio(false)
+#define fastio ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
 #define all(v) v.begin(), v.end()
 #define rall(v) v.rbegin(), v.rend()
 #define For(i, n) for(int i=0; i < n; ++i)

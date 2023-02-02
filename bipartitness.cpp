@@ -58,31 +58,30 @@ sim dor(const c&) { ris; }
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
 
-map<int, set<int>> graph;
+map<int, vi> graph;
 vb visited;
-vi colors;
-void dfs(int pos, int color=0){
+int colors[2];
+void dfs(int pos, int color){
 	visited[pos] = 1;
-	colors[pos] = color;
+	colors[color]++;
 	for(int edge : graph[pos]){
-		if(!visited[edge])
-			dfs(pos, 1-color);
+		if(!visited[edge]){
+			dfs(edge, !color);
+		}
 	}
 }
 void solve(){
 	int n; cin >> n;
 	visited.assign(n, false);
-	colors.assign(n, -1);
 	For(i, n-1){
 		int x, y; cin >> x >> y;
 		x--; y--;
-		graph[x].insert(y);
-		graph[y].insert(x);
+		graph[x].PB(y);
+		graph[y].PB(x);
 	}
-	dfs(0);
-	debug() << imie(colors);
+	dfs(0, 0);
+	cout << colors[0] * 1LL * colors[1] - (n-1) << endl;
 }
-
 int main(){
 	fastio;
 	// cout << setprecision(9);
