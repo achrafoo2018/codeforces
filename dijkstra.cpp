@@ -59,18 +59,44 @@ sim dor(const c&) { ris; }
 #define Forr(i, n, p) for(int i=p; i < n; ++i)
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
-int n;
-vll arr;
-vi work(int i, int l, int r){
-	if(i == n)
-		return 0;
-}
+map<ll, vpll> graph;
+int n, m;
 void solve(){
-	cin >> n;
-	arr.resize(n);
-	For(i, n) cin >> arr[i];
-	vi ans = work(0, 0, 0);
-	dd(ans);
+	cin >> n >> m;
+	For(i, m){
+		ll a, b, w; cin >> a >> b >> w;
+		a--, b--;
+		graph[a].PB({b, w});
+		graph[b].PB({a, w});
+	}
+	priority_queue<pll> pq;
+	vll visited(n);
+	vll distances(n, 1e18);
+	vll anc(n);
+	distances[0] = 0;
+	pq.push({0, 0});
+	while(!pq.empty()){
+		ll a = pq.top().second; pq.pop();
+		if(visited[a]) continue;
+		visited[a] = 1;
+		for(pll e : graph[a]){
+			ll b = e.first, w = e.second;
+			if(distances[a]+w < distances[b]){
+				distances[b] = distances[a]+w;
+				pq.push({-distances[b], b});
+				anc[b] = a;
+			}
+		}
+	}
+	if(distances[n-1] == 1e18){
+		cout << -1 << endl; return;
+	}
+	vi path;
+	for(int i=n-1; i != 0; i=anc[i])
+		path.PB(i+1);
+	path.PB(1);
+	reverse(all(path));
+	dd(path);
 }
 
 int main(){
@@ -80,7 +106,7 @@ int main(){
 	// freopen("input.in", "r", stdin);
 	// freopen("output.out", "w", stdout);
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 	while(t--)
 		solve();
 	return 0;

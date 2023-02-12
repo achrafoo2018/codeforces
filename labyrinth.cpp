@@ -72,9 +72,16 @@ void bfs(int i, int j){
 	queue<pii> q;
 	q.push({i, j});
 	while(!q.empty()){
-		pii x = q.front();
+		int x, y;
+		tie(x, y) = q.front();
 		q.pop();
-		
+
+		if(!check(x.first, x.second) || grid[x.first][x.second] == '#') continue;	
+
+		q.push({x.first+1, x.second});
+		q.push({x.first-1, x.second});
+		q.push({x.first, x.second+1});
+		q.push({x.first, x.second-1});
 	}
 }
 
@@ -92,7 +99,7 @@ void solve(){
 			}
 		}
 	}
-	dfs(x, y);
+	bfs(x, y);
 	if(ans.size()){
 		yes;
 		cout << ans.size() << endl;

@@ -59,18 +59,54 @@ sim dor(const c&) { ris; }
 #define Forr(i, n, p) for(int i=p; i < n; ++i)
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
+map<int, set<int>> graph;
 int n;
-vll arr;
-vi work(int i, int l, int r){
-	if(i == n)
-		return 0;
+int ans;
+vi arr;
+map<int, int> visited;
+map<int, int> colors;
+int cnt[4];
+void dfs(int i, int color=1){
+	visited[i] = 1;
+	colors[i] = color;
+	cnt[color] = 1;
+	for(int e : graph[i]){
+		if(colors[e] == colors[i]){
+			colors[e] = 3;
+			cnt[3] = 1;
+			continue;
+		}	
+		if(visited[e]) continue;
+		dfs(e, 3-color);
+	}
 }
+
 void solve(){
 	cin >> n;
 	arr.resize(n);
-	For(i, n) cin >> arr[i];
-	vi ans = work(0, 0, 0);
-	dd(ans);
+	visited.clear();
+	colors.clear();
+	graph.clear();
+	For(i, 4) cnt[i] = 0;
+	For(i, n){
+		cin >> arr[i];
+	}
+	For(i, n){
+		if(arr[i] != arr[(i+1) % n]){
+			graph[i].insert((i+1)%n);
+			graph[(i+1)%n].insert(i);
+		}
+	}
+	For(i, n){
+		if(!visited[i])
+			dfs(i);
+	}
+
+	ans = cnt[1] + cnt[2] + cnt[3];
+	cout << ans << endl;
+	For(i, n)
+		cout << colors[i] << " ";
+	cout << endl;
 }
 
 int main(){

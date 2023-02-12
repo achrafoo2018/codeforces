@@ -15,6 +15,7 @@ typedef vector<pii> vpii;
 typedef vector<vll> vvll;
 typedef pair<ll, ll> pll;
 
+#define endl '\n';
 #define yes cout << "YES\n";
 #define no  cout << "NO\n";
 template<class T> bool ckmin(T& a, const T& b) { return b < a ? a = b, 1 : 0; }
@@ -50,35 +51,56 @@ sim dor(const c&) { ris; }
 #define imie(...) " [" << #__VA_ARGS__ ": " << (__VA_ARGS__) << "] "
 #define MP make_pair
 #define PB push_back
-#define fastio ios_base::sync_with_stdio(false)
+#define fastio ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
 #define all(v) v.begin(), v.end()
 #define rall(v) v.rbegin(), v.rend()
 #define For(i, n) for(int i=0; i < n; ++i)
 #define Forr(i, n, p) for(int i=p; i < n; ++i)
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
+vi colors, visited;
+int cnt[2];
+map<int, vi> adj;
+void dfs(int i, int color){
+	visited[i] = 1;
+	colors[i] = color;
+	cnt[color]++;
+	for(int e : adj[i]){
+		if(!visited[e]){
+			dfs(e, 1-color);
+		}
+	}
+}
 
 void solve(){
+	adj.clear();
+	cnt[0] = 0, cnt[1] = 0;
 	int n, m; cin >> n >> m;
-	map<int, vi> graph;
+	colors.assign(n, -1);
+	visited.assign(n, 0);
 	For(i, m){
 		int x, y; cin >> x >> y;
-		graph[x].PB(y);
-		graph[y].PB(x);
+		x--, y--;
+		adj[x].PB(y);
+		adj[y].PB(x);
 	}
-	vpii arr(n+1);
-	for(auto i : graph){
-		arr.PB({i.second.size(), i.first});
-	}
-	sort(all(arr), greater<int>());
-	vb visited(n+1);
-	set<int> ans;
-	For(i, n){
-		if(visited[i]) continue;
-		visited[i] = 1;
-		Forr(j, graph[i].size(), 1){
-			ans.insert(graph[i][j]);
+	dfs(0, 0);
+	if(cnt[0] < cnt[1]){
+		cout << cnt[0] << endl;
+		For(i, n){
+			if(colors[i] == 0){
+				cout << (i+1) << " ";
+			}
 		}
+		cout << endl;
+	}else{
+		cout << cnt[1] << endl;
+		For(i, n){
+			if(colors[i] == 1){
+				cout << (i+1) << " ";
+			}
+		}
+		cout << endl;
 	}
 }
 
@@ -89,7 +111,7 @@ int main(){
 	// freopen("input.in", "r", stdin);
 	// freopen("output.out", "w", stdout);
 	int t = 1;
-	// cin >> t;
+	cin >> t;
 	while(t--)
 		solve();
 	return 0;

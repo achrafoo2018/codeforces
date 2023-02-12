@@ -14,7 +14,6 @@ typedef vector<ll> vll;
 typedef vector<pii> vpii;
 typedef vector<vll> vvll;
 typedef pair<ll, ll> pll;
-typedef vector<pll> vpll;
 
 #define endl '\n';
 #define yes cout << "YES\n";
@@ -59,18 +58,42 @@ sim dor(const c&) { ris; }
 #define Forr(i, n, p) for(int i=p; i < n; ++i)
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
-int n;
-vll arr;
-vi work(int i, int l, int r){
-	if(i == n)
-		return 0;
-}
+
 void solve(){
-	cin >> n;
-	arr.resize(n);
-	For(i, n) cin >> arr[i];
-	vi ans = work(0, 0, 0);
-	dd(ans);
+	int n, m, q; cin >> n >> m >> q;
+	map<int, vpii> adj;
+	For(i, m){
+		int a, b, c; cin >> a >> b >> c;
+		a--, b--;
+		adj[a].PB({b, c});
+		adj[b].PB({a, c});
+	}
+	vvll distances(n, vll(n, 1e18));
+	vvi processed(n, vi(n));
+	For(i, n){
+		priority_queue<pii> pq;
+		pq.push({0, i});
+		distances[i][i] = 0;
+		while(!pq.empty()){
+			int a = pq.top().second; pq.pop();
+			if(processed[i][a]) continue;
+			processed[i][a] = 1;
+			for(auto e : adj[a]){
+				int b = e.first, w = e.second;
+				if(distances[i][a]+w < distances[i][b]){
+					distances[i][b] = distances[i][a]+w;
+					pq.push({-distances[i][b], b});
+				}
+			}
+		}
+	}
+	For(i, q){
+		int a, b; cin >> a >> b;
+		a--, b--;
+		ll dist = distances[a][b];
+		dist = min(dist, distances[b][a]);
+		cout << (dist == 1e18 ? -1 : dist) << endl;
+	}
 }
 
 int main(){
@@ -80,7 +103,7 @@ int main(){
 	// freopen("input.in", "r", stdin);
 	// freopen("output.out", "w", stdout);
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 	while(t--)
 		solve();
 	return 0;

@@ -60,17 +60,50 @@ sim dor(const c&) { ris; }
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
 int n;
-vll arr;
-vi work(int i, int l, int r){
-	if(i == n)
-		return 0;
+vpll arr;
+int dp[100007];
+int bs(int v){
+	int l = 0, r = n-1;
+	int ans = n;
+	while(l <= r){
+		int mid = l + (r-l)/2;
+		if(arr[mid].first <= v){
+			l = mid+1;
+		}else{
+			ans = mid;
+			r = mid-1;
+		}
+	}
+	return ans;
+}
+
+int work(int i, int state){
+	if(i == n) return 0;
+	int &ans = dp[i];
+	if(ans != -1) return ans;
+	int r = bs(arr[i].first+arr[i].second);	
+	if(state){
+		if(i < n-1)
+			ans = 1 + work(i+1, (arr[i+1].first-arr[i].first > arr[i+1].second));
+		// else
+		// 	ans = 1 + work(i+1, 0);
+	}else{
+		if(r < n){
+			ans = 1 + work(r, (arr[r].first-(arr[i].first+arr[i].second) > arr[i].second));
+		}else{
+			ans = 1 + work(r, 0);
+		}
+	}
+	return ans = max(ans, work(i+1, (i < n-1 && (arr[i+1].first-arr[i].first > arr[i+1].second))));
 }
 void solve(){
+	memset(dp, -1, sizeof(dp));
 	cin >> n;
 	arr.resize(n);
-	For(i, n) cin >> arr[i];
-	vi ans = work(0, 0, 0);
-	dd(ans);
+	For(i, n) 
+		cin >> arr[i].first >> arr[i].second;
+	sort(all(arr));
+	cout << work(0, 1) << endl;
 }
 
 int main(){
@@ -80,7 +113,7 @@ int main(){
 	// freopen("input.in", "r", stdin);
 	// freopen("output.out", "w", stdout);
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 	while(t--)
 		solve();
 	return 0;

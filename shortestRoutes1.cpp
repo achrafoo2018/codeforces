@@ -5,12 +5,22 @@ typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> pii;
 typedef vector<int> vi;
+typedef vector<bool> vb;
+typedef vector<char> vchr;
+typedef vector<string> vstr;
 typedef vector<vi> vvi;
+typedef vector<vchr> vvchr;
 typedef vector<ll> vll;
 typedef vector<pii> vpii;
 typedef vector<vll> vvll;
 typedef pair<ll, ll> pll;
 
+#define endl '\n';
+#define yes cout << "YES\n";
+#define no  cout << "NO\n";
+template<class T> bool ckmin(T& a, const T& b) { return b < a ? a = b, 1 : 0; }
+template<class T> bool ckmax(T& a, const T& b) { return a < b ? a = b, 1 : 0; }
+mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().count());
 #define sim template < class c
 #define ris return * this
 #define dor > debug & operator <<
@@ -41,60 +51,55 @@ sim dor(const c&) { ris; }
 #define imie(...) " [" << #__VA_ARGS__ ": " << (__VA_ARGS__) << "] "
 #define MP make_pair
 #define PB push_back
-#define fastio ios_base::sync_with_stdio(false)
+#define fastio ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
 #define all(v) v.begin(), v.end()
 #define rall(v) v.rbegin(), v.rend()
 #define For(i, n) for(int i=0; i < n; ++i)
+#define Forr(i, n, p) for(int i=p; i < n; ++i)
+#define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
-const int N = 5000000;
-int dp[5555555];
-int spf[5555555];
-void sieve(){
-    spf[1] = 1;
-    for (int i=2; i<=N; i++)
-        spf[i] = i;
-    for (int i=4; i<=N; i+=2)
-        spf[i] = 2;
-    for (int i=3; i*i<=N; i++){
-        if (spf[i] == i){
-            for (int j=i*i; j<=N; j+=i)
-                if (spf[j]==j)
-                    spf[j] = i;
-        }
-    }
-}
 
-vector<int> getFactorization(int x)
-{
-    vector<int> ret;
-    while (x != 1)
-    {
-        ret.push_back(spf[x]);
-        x = x / spf[x];
-    }
-    return ret;
-}
-
-// https://www.geeksforgeeks.org/prime-factorization-using-sieve-olog-n-multiple-queries/
-int a, b, t;
 void solve(){
-    sieve();
-    int x = 12246;
-    cout << "prime factorization for " << x << " : ";
- 
-    // calling getFactorization function
-    vector <int> p = getFactorization(x);
- 
-    for (int i=0; i<p.size(); i++)
-        cout << p[i] << " ";
-    cout << endl;
+	int n, m; cin >> n >> m;
+	map<int, vpii> adj;
+	For(i, m){
+		int a, b, c; cin >> a >> b >> c;
+		a--, b--;
+		adj[a].PB({b, c});
+	}
+	vector<ll> distances(n);
+	vector<ll> processed(n);
+	priority_queue<pll> pq;
+	pq.push({0, 0});
+	distances[0] = 0;
+	Forr(i, n, 1) distances[i] = 1e18;
+	while(!pq.empty()){
+		ll a = pq.top().second; pq.pop();
+		if(processed[a]) continue;
+		processed[a] = 1;
+		for(auto e : adj[a]){
+			int b = e.first, w = e.second;
+			if(distances[a]+w < distances[b]){
+				distances[b] = distances[a]+w;
+				pq.push({-distances[b], b});
+			}
+		}
+	}
+	For(i, n){
+		cout << distances[i] << " ";
+	}
+	cout << endl;
 }
 
 int main(){
-	// fastio;
+	fastio;
 	// cout << setprecision(9);
 	// cout << fixed;
 	// freopen("input.in", "r", stdin);
-	solve();
+	// freopen("output.out", "w", stdout);
+	int t = 1;
+	// cin >> t;
+	while(t--)
+		solve();
 	return 0;
 }

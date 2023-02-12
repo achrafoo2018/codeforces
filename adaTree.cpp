@@ -59,18 +59,63 @@ sim dor(const c&) { ris; }
 #define Forr(i, n, p) for(int i=p; i < n; ++i)
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
-int n;
-vll arr;
-vi work(int i, int l, int r){
-	if(i == n)
-		return 0;
+const int N = 1e5 + 5, M = 3e7 + 7;
+int n, a[N];
+int root[N], nodes, L[M], R[M], seg[M];
+ 
+int build (int l, int r) {
+	int at = nodes++;
+ 
+	if (l == r) {
+		seg[at] = a[at];
+	} else {
+		int m = (l + r)/2;
+		L[at] = build (l, m);
+		R[at] = build (m + 1, r);
+		seg[at] = seg[L[at]] + seg[R[at]];
+	}
+ 
+	return at;
 }
+ 
+/* point update, v[p]++ */
+int update (int i, int l, int r, int p) {
+	int at = nodes++;
+ 
+	if (l == r) {
+		seg[at] = seg[i] + 1;
+	} else {
+		int m = (l + r)/2;
+		if (p <= m) {
+			L[at] = update (L[i], l, m, p);
+			R[at] = R[i];
+		} else {
+			L[at] = L[i];
+			R[at] = update (R[i], m + 1, r, p);
+		}
+		seg[at] = seg[L[at]] + seg[R[at]];
+	}
+ 
+	return at;
+}
+ 
+/* range query: v[A] + ... + v[B] */
+int A, B;
+int query (int i, int l, int r) {
+	if (A > B)	return 0;
+	if (r < A or l > B)	return 0;
+ 
+ 	if (l >= A and r <= B) {
+		return seg[i];
+	} else {
+		int m = (l + r)/2;
+		return query (L[i], l, m) + query (R[i], m + 1, r);
+	}
+}
+
+
 void solve(){
-	cin >> n;
-	arr.resize(n);
-	For(i, n) cin >> arr[i];
-	vi ans = work(0, 0, 0);
-	dd(ans);
+	
 }
 
 int main(){
@@ -80,7 +125,7 @@ int main(){
 	// freopen("input.in", "r", stdin);
 	// freopen("output.out", "w", stdout);
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 	while(t--)
 		solve();
 	return 0;

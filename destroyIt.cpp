@@ -14,7 +14,6 @@ typedef vector<ll> vll;
 typedef vector<pii> vpii;
 typedef vector<vll> vvll;
 typedef pair<ll, ll> pll;
-typedef vector<pll> vpll;
 
 #define endl '\n';
 #define yes cout << "YES\n";
@@ -60,17 +59,48 @@ sim dor(const c&) { ris; }
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
 int n;
-vll arr;
-vi work(int i, int l, int r){
-	if(i == n)
+vector<vector<pll>> cards;
+map<ll, map<ll, ll>> dp[4][6];
+ll work(int i, int j, int cost, int nb){
+	debug() << imie(i) imie(j);
+	if(i == n){
 		return 0;
+	}
+	if(cost > 3) return -1e18;
+	if(j == cards[i].size() || cost == 3){
+		return dp[cost][j][i][nb] = work(i+1, 0, 0, nb);
+	}
+	if(dp[cost][j].count(i) && dp[cost][j][i].count(nb)){
+		return dp[cost][j][i][nb];
+	}
+ 	return dp[cost][j][i][nb] = max( ((nb > 0 && (nb+1) % 10 == 0) ? 2 : 1) * cards[i][j].second + work(i, j+1, cost+cards[i][j].first, nb+1),
+					work(i, j+1, cost, nb));
 }
 void solve(){
 	cin >> n;
-	arr.resize(n);
-	For(i, n) cin >> arr[i];
-	vi ans = work(0, 0, 0);
-	dd(ans);
+	cards.resize(n);
+	For(i, n){
+		ll k; cin >> k;
+		vector<ll> turn[3];
+		For(j, k){
+			ll c, d; cin >> c >> d;
+			c--;
+			turn[c].PB(d);
+		}
+		For(j, 3){
+			sort(all(turn[j]), greater<ll>());
+			if(j == 0){
+				For(k, min(3, (int)turn[j].size())){
+					cards[i].PB({j+1, turn[j][k]});
+				}
+			}else{
+				if(turn[j].size())
+					cards[i].PB({j+1, turn[j][0]});
+			}
+		}
+	}
+	cout << work(0, 0, 0, 0) << endl;
+
 }
 
 int main(){
@@ -80,7 +110,7 @@ int main(){
 	// freopen("input.in", "r", stdin);
 	// freopen("output.out", "w", stdout);
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 	while(t--)
 		solve();
 	return 0;

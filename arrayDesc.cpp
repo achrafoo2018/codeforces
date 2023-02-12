@@ -66,41 +66,6 @@ void solve(){
 	arr.resize(n);
 	For(i, n)
 		cin >> arr[i];
-	int ans = 1;
-	For(i, n){
-		if(arr[i] != 0) continue;
-		if(i == 0 && n == 1){
-			ans *= m;
-		}else if(i == 0){
-			if(arr[i+1] == 0){
-				ans = (ans * m) % MOD;
-			}else{
-				if(arr[i+1] == m)
-					ans = (ans * 2) % MOD;
-				else
-					ans = (ans * 3) % MOD;
-			}
-		}else if(i == n-1){
-			if(arr[i-1] == 0){
-				ans = (ans * m) % MOD;
-			}else{
-				if(arr[i-1] == m)
-					ans = (ans * 2) % MOD;
-				else
-					ans = (ans * 3) % MOD;
-			}
-		}else{
-			int diff = abs(arr[i-1]-arr[i+1]);
-			if(diff > 2)
-				ans = (ans * 0);
-			else{
-				if(diff == 0)
-					ans = (ans * 3) % MOD;
-				else
-					ans = (ans * 2) % MOD;
-			}
-		}
-	}
 	cout << ans << endl;
 }
 
