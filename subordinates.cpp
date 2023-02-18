@@ -59,41 +59,28 @@ sim dor(const c&) { ris; }
 #define Forr(i, n, p) for(int i=p; i < n; ++i)
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
-int n, m;
-const int N = 505;
-ll distances[N][N];
-int q;
-const ll MAX = 1e18;
-void solve(){
-	For(i, N)
-		For(j, N)
-			distances[i][j] = MAX;
-	cin >> n >> m >> q;
-	For(i, m){
-		ll a, b, c; cin >> a >> b >> c;
-		distances[a][b] = min(distances[a][b], c);
-		distances[b][a] = min(distances[b][a], c);
-	}
-	for (int i = 1; i <= n; i++) {
-		distances[i][i] = 0;
-	}
-	for (int k = 1; k <= n; k++) {
-		for (int i = 1; i <= n; i++) {
-			for (int j = 1; j <= n; j++) {
-				distances[i][j] = min(distances[i][j], distances[i][k]+distances[k][j]);
-			}
-		}
-	}
-	while(q--){
-		int a, b; cin >> a >> b;
-		if(distances[a][b] == MAX){
-			cout << -1 << endl;
-		}else{
-			cout << distances[a][b] << endl;
-		}
+
+map<int, vi> graph;
+vi dp;
+
+void dfs(int i){
+	dp[i] = 1;
+	for(int e : graph[i]){
+		dfs(e);
+		dp[i] += dp[e];
 	}
 }
-
+void solve(){
+	int n; cin >> n;
+	dp.resize(n);
+	For(i, n-1){
+		int x; cin >> x;
+		graph[--x].PB(i+1);
+	}
+	dfs(0);
+	For(i, n) cout << dp[i]-1 << " ";
+	cout << endl;
+}
 
 int main(){
 	fastio;

@@ -59,41 +59,19 @@ sim dor(const c&) { ris; }
 #define Forr(i, n, p) for(int i=p; i < n; ++i)
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
-int n, m;
-const int N = 505;
-ll distances[N][N];
-int q;
-const ll MAX = 1e18;
-void solve(){
-	For(i, N)
-		For(j, N)
-			distances[i][j] = MAX;
-	cin >> n >> m >> q;
-	For(i, m){
-		ll a, b, c; cin >> a >> b >> c;
-		distances[a][b] = min(distances[a][b], c);
-		distances[b][a] = min(distances[b][a], c);
-	}
-	for (int i = 1; i <= n; i++) {
-		distances[i][i] = 0;
-	}
-	for (int k = 1; k <= n; k++) {
-		for (int i = 1; i <= n; i++) {
-			for (int j = 1; j <= n; j++) {
-				distances[i][j] = min(distances[i][j], distances[i][k]+distances[k][j]);
-			}
-		}
-	}
-	while(q--){
-		int a, b; cin >> a >> b;
-		if(distances[a][b] == MAX){
-			cout << -1 << endl;
-		}else{
-			cout << distances[a][b] << endl;
-		}
-	}
-}
 
+void solve(){
+	ll n, m; cin >> n >> m;
+	ll x = (m+(n-1)*2);
+	x = (x * (x + 1)) / 2;
+	x += (m * (m + 1)) / 2;
+
+	ll y = (n + (m-1) * 2);
+	y = (y * (y + 1)) / 2;
+	y += (n * (n + 1)) / 2;
+	
+	cout << min(x, y) << endl;
+}
 
 int main(){
 	fastio;
@@ -102,7 +80,7 @@ int main(){
 	// freopen("input.in", "r", stdin);
 	// freopen("output.out", "w", stdout);
 	int t = 1;
-	// cin >> t;
+	cin >> t;
 	while(t--)
 		solve();
 	return 0;

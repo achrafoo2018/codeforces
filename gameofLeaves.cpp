@@ -59,41 +59,39 @@ sim dor(const c&) { ris; }
 #define Forr(i, n, p) for(int i=p; i < n; ++i)
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
-int n, m;
-const int N = 505;
-ll distances[N][N];
-int q;
-const ll MAX = 1e18;
-void solve(){
-	For(i, N)
-		For(j, N)
-			distances[i][j] = MAX;
-	cin >> n >> m >> q;
-	For(i, m){
-		ll a, b, c; cin >> a >> b >> c;
-		distances[a][b] = min(distances[a][b], c);
-		distances[b][a] = min(distances[b][a], c);
-	}
-	for (int i = 1; i <= n; i++) {
-		distances[i][i] = 0;
-	}
-	for (int k = 1; k <= n; k++) {
-		for (int i = 1; i <= n; i++) {
-			for (int j = 1; j <= n; j++) {
-				distances[i][j] = min(distances[i][j], distances[i][k]+distances[k][j]);
-			}
-		}
-	}
-	while(q--){
-		int a, b; cin >> a >> b;
-		if(distances[a][b] == MAX){
-			cout << -1 << endl;
-		}else{
-			cout << distances[a][b] << endl;
+
+vi visited;
+map<int, vi> graph;
+int n;
+int nb;
+void dfs(int pos, int dis=0){
+	visited[pos] = 1;
+	nb++;
+	for(int e : graph[pos]){
+		if(!visited[e]){
+			dfs(e, dis+1);
 		}
 	}
 }
-
+void solve(){
+	int x; cin >> n >> x;
+	x--;
+	graph.clear();
+	For(i, n-1){
+		int u, v; cin >> u >> v;
+		u--, v--;
+		graph[u].PB(v);
+		graph[v].PB(u);
+	}
+	visited.assign(n, 0);
+	nb = 0;
+	dfs(x);
+	if(graph[x].size() <= 1 || nb % 2 == 0){
+		cout << "Ayush" << endl;
+	}else{
+		cout << "Ashish" << endl;
+	}
+}
 
 int main(){
 	fastio;
@@ -102,7 +100,7 @@ int main(){
 	// freopen("input.in", "r", stdin);
 	// freopen("output.out", "w", stdout);
 	int t = 1;
-	// cin >> t;
+	cin >> t;
 	while(t--)
 		solve();
 	return 0;

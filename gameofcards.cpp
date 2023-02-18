@@ -59,41 +59,79 @@ sim dor(const c&) { ris; }
 #define Forr(i, n, p) for(int i=p; i < n; ++i)
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
-int n, m;
-const int N = 505;
-ll distances[N][N];
-int q;
-const ll MAX = 1e18;
-void solve(){
-	For(i, N)
-		For(j, N)
-			distances[i][j] = MAX;
-	cin >> n >> m >> q;
-	For(i, m){
-		ll a, b, c; cin >> a >> b >> c;
-		distances[a][b] = min(distances[a][b], c);
-		distances[b][a] = min(distances[b][a], c);
-	}
-	for (int i = 1; i <= n; i++) {
-		distances[i][i] = 0;
-	}
-	for (int k = 1; k <= n; k++) {
-		for (int i = 1; i <= n; i++) {
-			for (int j = 1; j <= n; j++) {
-				distances[i][j] = min(distances[i][j], distances[i][k]+distances[k][j]);
-			}
-		}
-	}
-	while(q--){
-		int a, b; cin >> a >> b;
-		if(distances[a][b] == MAX){
-			cout << -1 << endl;
-		}else{
-			cout << distances[a][b] << endl;
-		}
-	}
+const int N = 1e6+7;
+int spf[5555555];
+void sieve(){
+    spf[1] = 1;
+    for (int i=2; i<=N; i++)
+        spf[i] = i;
+    for (int i=4; i<=N; i+=2)
+        spf[i] = 2;
+    for (int i=3; i*i<=N; i++){
+        if (spf[i] == i){
+            for (int j=i*i; j<=N; j+=i)
+                if (spf[j]==j)
+                    spf[j] = i;
+        }
+    }
 }
 
+map<int, int> cnt1, cnt2;
+void getFactorization(int x, bool cond)
+{
+    vector<int> ret;
+    while (x != 1)
+    {
+		if(cond)
+			cnt1[spf[x]]++;
+		else
+			cnt2[spf[x]]++;
+        x = x / spf[x];
+    }
+}
+
+vi sieve(int n){
+	bool arr[n];
+	vi primes;
+	arr[0] = arr[1] = true;
+	for(int i=2; i*i < n; i++){
+		if(!arr[i]){
+			for(int j=i*i; j < n; j += i)
+				arr[j] = true;
+		}
+	}
+	For(i, n){
+		if(!arr[i])
+			primes.push_back(i);
+	}
+	return primes;
+}
+vi primes;
+void solve(){
+	sieve();
+	int n, l; cin >> n >> l;
+	For(i, n){
+		int x; cin >> x;
+		getFactorization(x, 1);
+	}
+	For(i, n){
+		int x; cin >> x;
+		getFactorization(x, 0);
+	}
+	debug() << imie(cnt1) imie(cnt2);
+	primes = sieve(N);
+	int mn1 = INT_MAX, mn2 = INT_MAX;
+	for(int i : primes){
+		if(i > l) break;
+		mn1 = min(mn1, cnt1[i]);
+		mn2 = min(mn2, cnt2[i]);
+	}
+	if(mn1 >= mn2){
+		cout << "Rami" << endl;
+	}else{
+		cout << "Yessine" << endl;
+	}
+}
 
 int main(){
 	fastio;

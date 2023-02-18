@@ -59,41 +59,30 @@ sim dor(const c&) { ris; }
 #define Forr(i, n, p) for(int i=p; i < n; ++i)
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
-int n, m;
-const int N = 505;
-ll distances[N][N];
-int q;
-const ll MAX = 1e18;
-void solve(){
-	For(i, N)
-		For(j, N)
-			distances[i][j] = MAX;
-	cin >> n >> m >> q;
-	For(i, m){
-		ll a, b, c; cin >> a >> b >> c;
-		distances[a][b] = min(distances[a][b], c);
-		distances[b][a] = min(distances[b][a], c);
-	}
-	for (int i = 1; i <= n; i++) {
-		distances[i][i] = 0;
-	}
-	for (int k = 1; k <= n; k++) {
-		for (int i = 1; i <= n; i++) {
-			for (int j = 1; j <= n; j++) {
-				distances[i][j] = min(distances[i][j], distances[i][k]+distances[k][j]);
-			}
-		}
-	}
-	while(q--){
-		int a, b; cin >> a >> b;
-		if(distances[a][b] == MAX){
-			cout << -1 << endl;
-		}else{
-			cout << distances[a][b] << endl;
-		}
-	}
-}
 
+const int N = 1e5+7;
+const int MOD = 1e9+7;
+ll dp[N];
+ll pref[N];
+void solve(){
+	int t, k; cin >> t >> k;
+	dp[0] = 1;
+	Forr(i, N, 1){
+		dp[i] = dp[i-1];
+		if(k <= i){
+			dp[i] = (dp[i] + dp[i-k]) % MOD;
+		}
+		dp[i] %= MOD;
+	}
+	Forr(i, N, 1){
+		pref[i] = (pref[i-1] + dp[i]) % MOD;
+		pref[i] %= MOD;
+	}
+	For(i, t){
+		int a, b; cin >> a >> b;
+		cout << (pref[b] - pref[a-1] + MOD) % MOD << endl;
+ 	}
+}
 
 int main(){
 	fastio;

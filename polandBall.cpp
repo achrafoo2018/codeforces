@@ -59,41 +59,31 @@ sim dor(const c&) { ris; }
 #define Forr(i, n, p) for(int i=p; i < n; ++i)
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
-int n, m;
-const int N = 505;
-ll distances[N][N];
-int q;
-const ll MAX = 1e18;
-void solve(){
-	For(i, N)
-		For(j, N)
-			distances[i][j] = MAX;
-	cin >> n >> m >> q;
-	For(i, m){
-		ll a, b, c; cin >> a >> b >> c;
-		distances[a][b] = min(distances[a][b], c);
-		distances[b][a] = min(distances[b][a], c);
-	}
-	for (int i = 1; i <= n; i++) {
-		distances[i][i] = 0;
-	}
-	for (int k = 1; k <= n; k++) {
-		for (int i = 1; i <= n; i++) {
-			for (int j = 1; j <= n; j++) {
-				distances[i][j] = min(distances[i][j], distances[i][k]+distances[k][j]);
-			}
-		}
-	}
-	while(q--){
-		int a, b; cin >> a >> b;
-		if(distances[a][b] == MAX){
-			cout << -1 << endl;
-		}else{
-			cout << distances[a][b] << endl;
-		}
-	}
+map<int, vi> tree;
+vi visited;
+int n;
+void dfs(int pos){
+	visited[pos] = 1;
+	for(int e : tree[pos])
+		if(!visited[e]) dfs(e);
 }
-
+void solve(){
+	cin >> n;
+	visited.resize(n);
+	For(i, n){
+		int x; cin >> x;
+		tree[i].PB(--x);
+		tree[x].PB(i);
+	}
+	int ans = 0;
+	For(i, n){
+		if(!visited[i]){
+			dfs(i);
+			ans++;
+		}
+	}	
+	cout << ans << endl;
+}
 
 int main(){
 	fastio;

@@ -59,41 +59,39 @@ sim dor(const c&) { ris; }
 #define Forr(i, n, p) for(int i=p; i < n; ++i)
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
-int n, m;
-const int N = 505;
-ll distances[N][N];
-int q;
-const ll MAX = 1e18;
-void solve(){
-	For(i, N)
-		For(j, N)
-			distances[i][j] = MAX;
-	cin >> n >> m >> q;
-	For(i, m){
-		ll a, b, c; cin >> a >> b >> c;
-		distances[a][b] = min(distances[a][b], c);
-		distances[b][a] = min(distances[b][a], c);
+
+int n;
+map<int, vi> tree;
+vi visited;
+int length(int pos=0){
+	int mx = 0;
+	for(int e : tree[pos]){
+		if(!visited[e])
+			mx = max(mx, length(e));
 	}
-	for (int i = 1; i <= n; i++) {
-		distances[i][i] = 0;
-	}
-	for (int k = 1; k <= n; k++) {
-		for (int i = 1; i <= n; i++) {
-			for (int j = 1; j <= n; j++) {
-				distances[i][j] = min(distances[i][j], distances[i][k]+distances[k][j]);
-			}
-		}
-	}
-	while(q--){
-		int a, b; cin >> a >> b;
-		if(distances[a][b] == MAX){
-			cout << -1 << endl;
-		}else{
-			cout << distances[a][b] << endl;
-		}
-	}
+	return 1 + mx;
 }
 
+int diameter(int pos=1){
+	if(pos == 0) return 0;
+	int ll = length(tree[pos].first);
+	int rl = length(tree[pos].second);
+	
+	int ld = diameter(tree[pos].first);
+	int rd = diameter(tree[pos].first);
+
+	return max(ll+rl+1, max(ld, rd));
+}
+void solve(){
+	cin >> n;
+	visited.assign(n);
+	For(i, n){
+		int a, b; cin >> a >> b;
+		tree[a].PB(b);
+		tree[b].PB(a);
+	}
+	cout << diameter()-1 << endl;
+}
 
 int main(){
 	fastio;
