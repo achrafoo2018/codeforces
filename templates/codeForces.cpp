@@ -1,6 +1,8 @@
 #include "bits/stdc++.h"
 using namespace std;
- 
+// #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
 typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> pii;
@@ -59,7 +61,6 @@ sim dor(const c&) { ris; }
 #define Forr(i, n, p) for(int i=p; i < n; ++i)
 #define dd(arr) For(i, arr.size()) cout << arr[i] << " "; cout << endl;
 
-
 void solve(){
 	
 }
@@ -71,7 +72,7 @@ int main(){
 	// freopen("input.in", "r", stdin);
 	// freopen("output.out", "w", stdout);
 	int t = 1;
-	// cin >> t;
+	cin >> t;
 	while(t--)
 		solve();
 	return 0;
